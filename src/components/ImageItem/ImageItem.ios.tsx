@@ -18,6 +18,8 @@ import {
   NativeSyntheticEvent,
   TouchableWithoutFeedback,
   GestureResponderEvent,
+  StyleProp,
+  ImageStyle,
 } from "react-native";
 
 import useDoubleTapToZoom from "../../hooks/useDoubleTapToZoom";
@@ -41,6 +43,7 @@ type Props = {
   delayLongPress: number;
   swipeToCloseEnabled?: boolean;
   doubleTapToZoomEnabled?: boolean;
+  imageStyle?: StyleProp<ImageStyle>;
 };
 
 const ImageItem = ({
@@ -49,6 +52,7 @@ const ImageItem = ({
   onRequestClose,
   onLongPress,
   delayLongPress,
+  imageStyle,
   swipeToCloseEnabled = true,
   doubleTapToZoomEnabled = true,
 }: Props) => {
@@ -136,11 +140,18 @@ const ImageItem = ({
           onLongPress={onLongPressHandler}
           delayLongPress={delayLongPress}
         >
+          <Animated.View
+            style={[
+              imageStylesWithOpacity,
+              styles.imageContainer
+            ]}
+          >
           <Animated.Image
             source={imageSrc}
-            style={imageStylesWithOpacity}
+            style={[styles.image, imageStyle]}
             onLoad={() => setLoaded(true)}
           />
+          </Animated.View>
         </TouchableWithoutFeedback>
       </ScrollView>
     </View>
@@ -155,6 +166,12 @@ const styles = StyleSheet.create({
   imageScrollContainer: {
     height: SCREEN_HEIGHT,
   },
+  image: {
+    flex: 1,
+  },
+  imageContainer: {
+    overflow: 'hidden'
+  }
 });
 
 export default React.memo(ImageItem);

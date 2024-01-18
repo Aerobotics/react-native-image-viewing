@@ -15,6 +15,8 @@ import {
   VirtualizedList,
   ModalProps,
   Modal,
+  StyleProp,
+  ImageStyle,
 } from "react-native";
 
 import ImageItem from "./components/ImageItem/ImageItem";
@@ -40,6 +42,7 @@ type Props = {
   swipeToCloseEnabled?: boolean;
   doubleTapToZoomEnabled?: boolean;
   delayLongPress?: number;
+  imageStyle?: StyleProp<ImageStyle>;
   HeaderComponent?: ComponentType<{ imageIndex: number }>;
   FooterComponent?: ComponentType<{ imageIndex: number }>;
 };
@@ -66,6 +69,7 @@ function ImageViewing({
   delayLongPress = DEFAULT_DELAY_LONG_PRESS,
   HeaderComponent,
   FooterComponent,
+  imageStyle,
 }: Props) {
   const imageList = useRef<VirtualizedList<ImageSource>>(null);
   const [opacity, onRequestCloseEnhanced] = useRequestClose(onRequestClose);
@@ -140,6 +144,7 @@ function ImageViewing({
               delayLongPress={delayLongPress}
               swipeToCloseEnabled={swipeToCloseEnabled}
               doubleTapToZoomEnabled={doubleTapToZoomEnabled}
+              imageStyle={imageStyle}
             />
           )}
           onMomentumScrollEnd={onScroll}

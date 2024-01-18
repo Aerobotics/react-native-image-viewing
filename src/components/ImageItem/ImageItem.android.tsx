@@ -16,6 +16,8 @@ import {
   NativeScrollEvent,
   NativeSyntheticEvent,
   NativeMethodsMixin,
+  StyleProp,
+  ImageStyle,
 } from "react-native";
 
 import useImageDimensions from "../../hooks/useImageDimensions";
@@ -39,6 +41,7 @@ type Props = {
   delayLongPress: number;
   swipeToCloseEnabled?: boolean;
   doubleTapToZoomEnabled?: boolean;
+  imageStyle?: StyleProp<ImageStyle>;
 };
 
 const ImageItem = ({
@@ -47,6 +50,7 @@ const ImageItem = ({
   onRequestClose,
   onLongPress,
   delayLongPress,
+  imageStyle,
   swipeToCloseEnabled = true,
   doubleTapToZoomEnabled = true,
 }: Props) => {
@@ -131,12 +135,23 @@ const ImageItem = ({
         onScrollEndDrag,
       })}
     >
-      <Animated.Image
+      <Animated.View
         {...panHandlers}
-        source={imageSrc}
-        style={imageStylesWithOpacity}
-        onLoad={onLoaded}
-      />
+        style={[
+          imageStylesWithOpacity,
+          styles.imageContainer
+        ]}
+      >
+        <Animated.Image
+          source={imageSrc}
+          style={[
+            styles.image,
+            imageStyle
+          ]}
+          resizeMode={'contain'}
+          onLoad={onLoaded}
+        />
+      </Animated.View>
       {(!isLoaded || !imageDimensions) && <ImageLoading />}
     </ScrollView>
   );
@@ -150,6 +165,12 @@ const styles = StyleSheet.create({
   imageScrollContainer: {
     height: SCREEN_HEIGHT * 2,
   },
+  image: {
+    flex: 1,
+  },
+  imageContainer: {
+    overflow: 'hidden'
+  }
 });
 
 export default React.memo(ImageItem);
